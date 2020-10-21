@@ -1,5 +1,7 @@
+#!/usr/bin/env node
+
 /**
- * @name nodemw-download-wiki-files
+ * @name get-wiki-images
  * @author Dragon-Fish
  */
 
@@ -8,21 +10,19 @@ const { saveImage } = require('./modules/saveImage')
 const { mkdirs } = require('./modules/mkdirs')
 
 // 获取参数
-const { argv } = process
+const argv = process.argv.slice(2)
 
-var server = argv[2]
-const path = argv[3] || ''
+var server = argv[0]
+const path = argv[1] || ''
 
 // 显示帮助信息
-const helpText = 'Usage: yarn start <wgServerName> [wgScriptPath]'
-// server 未设置
-if (!server) {
-  console.error('Missing params\n' + helpText)
+if (!server || server === '-h' || server === '--help') {
+  console.log('Usage: get-wiki-images <wgServerName> [wgScriptPath]')
   return
 }
-// 帮助
-if (server === '-h' || server === '--help') {
-  console.log(helpText)
+// 版本号
+if (server === '-v' || server === '--version') {
+  console.log('get-wiki-images v' + require('./package.json').version)
   return
 }
 
