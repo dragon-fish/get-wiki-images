@@ -1,0 +1,15 @@
+{
+  "name": "nodemw-download-all-images",
+  "description": "A simple script that let you quickly back up all images on the wiki via the command line",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Dragon-Fish",
+  "license": "MIT",
+  "dependencies": {
+    "nodemw": "^0.13.0",
+    "request": "^2.88.2"
+  },
+  "scripts": {
+    "start": "node ."
+  }
+}
