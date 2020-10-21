@@ -10,7 +10,8 @@
     "request": "^2.88.2"
   },
   "scripts": {
-    "start": "node ."
+    "start": "node .",
+    "publish:stable": "npm publish --tag latest"
   },
   "bin": {
     "get-wiki-images": "./index.js"
