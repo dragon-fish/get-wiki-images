@@ -1,6 +1,6 @@
 # Get Wiki Images CLI
 
-A simple command line that let you quickly back up all images on the wiki.
+A simple command line that let you quickly back up all images on the wiki. ~~一键搬家跑路必备脚本~~
 
 ## Install
 ```bash
@@ -16,7 +16,7 @@ get-wiki-images -v
 ## Usage
 
 ```bash
-get-wiki-images start <wgServerName> [wgScriptPath]
+get-wiki-images <wgServerName> [wgScriptPath]
 ```
 
 ## Examples
@@ -36,4 +36,4 @@ get-wiki-images ff14.huijiwiki.com /w
 
 Could be find at `./images/<wgServerName>/`.
 
-e.g. You run this script at `C:\User\YOUNAME\Documents\`. Images from `wiki.bar.com` will be save at `C:\User\YOUNAME\Documents\images\wiki.bar.com\`
+e.g. You run this script at `C:\Users\YOUNAME\Documents\`. Images from `wiki.bar.com` will be save at `C:\Users\YOUNAME\Documents\images\wiki.bar.com\`
