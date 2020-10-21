@@ -57,8 +57,7 @@ function main(from = '') {
     console.log('=== STARTING DOWNLOADING FILES FROM ' + server + ' ===')
 
     // 缓存图片数量
-    // var imgCount = data.length
-    var imgCount = 3
+    var imgCount = data.length
 
     // 单次下载任务
     function downloadOne(index) {

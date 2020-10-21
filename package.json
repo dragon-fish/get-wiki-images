@@ -1,7 +1,7 @@
 {
   "name": "get-wiki-images",
   "description": "A simple script that let you quickly back up all images on the wiki via the command line",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "index.js",
   "author": "Dragon-Fish",
   "license": "MIT",
