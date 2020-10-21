@@ -1,5 +1,5 @@
 {
-  "name": "nodemw-download-all-images",
+  "name": "nodemw-download-wiki-files",
   "description": "A simple script that let you quickly back up all images on the wiki via the command line",
   "version": "1.0.0",
   "main": "index.js",

@@ -1,5 +1,5 @@
 /**
- * @name nodemw-download-all-images
+ * @name nodemw-download-wiki-files
  * @author Dragon-Fish
  */
 
@@ -54,7 +54,7 @@ function main(from = '') {
   // 获取图片信息
   client.getImages(from, (err, data) => {
 
-    console.log('=== 开始从 ' + server + ' 下载图片 ===')
+    console.log('=== STARTING DOWNLOADING FILES FROM ' + server + ' ===')
 
     // 缓存图片数量
     // var imgCount = data.length
@@ -76,7 +76,7 @@ function main(from = '') {
         })
       } else {
         // 下载完毕
-        console.log('=== 图片下载完毕，请在 ' + fileDir + ' 查看 ===')
+        console.log('=== ALL DONE, CHECK FILES AT ' + fileDir + ' ===')
       }
     }
 
