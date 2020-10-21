@@ -17,7 +17,7 @@ const path = argv[1] || ''
 
 // 显示帮助信息
 if (!server || server === '-h' || server === '--help') {
-  console.log('Usage: get - wiki - images < wgServerName > [wgScriptPath]\nUpdate: yarn global add ' + require('./ package.json').name)
+  console.log('Usage: get-wiki-images <wgServerName> [wgScriptPath]\nUpdate: yarn global add ' + require('./package.json').name)
   return
 }
 // 版本号
