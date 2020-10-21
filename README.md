@@ -16,7 +16,7 @@ get-wiki-images -v
 ## Usage
 
 ```bash
-get-wiki-images <wgServerName> [wgScriptPath]
+get-wiki-images <wgServerName> [wgScriptPath|null] [continue|null]
 ```
 
 ## Examples
@@ -24,12 +24,18 @@ get-wiki-images <wgServerName> [wgScriptPath]
 ```bash
 # Normal
 get-wiki-images www.wjghj.cn
+
 # Include protocol
 get-wiki-images http://www.shoutwiki.com
+
 # BWIKI
 get-wiki-images wiki.biligame.com /ys
+
 # Huiji Wiki
 get-wiki-images ff14.huijiwiki.com /w
+
+# Continue download from file
+get-wiki-images wiki.biligame.com /ys 塞西莉亚花.png
 ```
 
 ## Downloaded files

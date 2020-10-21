@@ -1,13 +1,13 @@
 {
   "name": "get-wiki-images",
   "description": "A simple script that let you quickly back up all images on the wiki via the command line",
-  "version": "1.0.7",
+  "version": "1.1.1",
   "main": "index.js",
   "author": "Dragon-Fish",
   "license": "MIT",
   "repository": "https://github.com/Dragon-Fish/get-wiki-images.git",
   "dependencies": {
-    "nodemw": "^0.13.0",
+    "axios": "^0.20.0",
     "request": "^2.88.2"
   },
   "scripts": {
@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/Dragon-Fish/get-wiki-images#readme",
   "keywords": [
-    "nodemw",
+    "ajax",
     "mediawiki",
     "mediawiki-api",
     "cli"
