@@ -71,6 +71,11 @@ function main(from = '', fromCount = 0) {
       console.log('=== START DOWNLOAD FILES FROM ' + wikiServer + ' ===')
     }
 
+    if (typeof data !== 'object' || !data.query || !data.query.allimages) {
+      console.error('[ERROR] Invalid response')
+      return
+    }
+
     // 变量
     var { allimages } = data.query
 
@@ -82,7 +87,14 @@ function main(from = '', fromCount = 0) {
       if (index < imgCount) {
         var img = allimages[index],
           url = img.url,
-          fileName = img.name,
+          fileName =
+            // 防雷补丁
+            img.name
+              .replace(/\//g, '%2F')
+              .replace(/:/g, '%3A')
+              .replace(/\*/g, '%2A')
+              .replace(/\?/g, '%3F')
+              .replace(/"/g, '%22'),
           filePath = fileDir + fileName
         var thisFileNo = index + fromCount + 1,
           totalFileNo = imgCount + fromCount
@@ -109,6 +121,8 @@ function main(from = '', fromCount = 0) {
     // 从第一个张图片开始下载
     downloadOne(0)
 
+  }).catch(err => {
+    console.error('[ERROR]', err)
   })
 }
 

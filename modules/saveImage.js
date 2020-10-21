@@ -1,13 +1,13 @@
 var request = require('request')
 var fs = require('fs')
 
-function saveImage(url, filename, fn) {
+function saveImage(url, fileName, cb) {
   request(url).pipe(
-    fs.createWriteStream(filename).on('close', function (err, res) {
+    fs.createWriteStream(fileName).on('close', function (err, res) {
       if (err) {
         console.log(err)
       } else {
-        fn && fn()
+        cb && cb()
       }
     })
   )
