@@ -91,7 +91,11 @@ const getFileList = require('./module/getFileList')
       .replace(/"/g, '%22')
 
     await saveFile(fileUrl, path.resolve(saveDir, fileName))
-    console.log('[get-wiki-images]', `[${((i + 1) / totalFile * 100).toFixed(2)} %] (${i + 1}/${totalFile})`, fileName)
+    console.log(
+      '[get-wiki-images]',
+      `[${(((i + 1) / totalFile) * 100).toFixed(2)} %] (${i + 1}/${totalFile})`,
+      fileName
+    )
     i++
     if (i < totalFile) {
       return saveOne(i)
@@ -101,5 +105,4 @@ const getFileList = require('./module/getFileList')
   console.log('[get-wiki-images]', '=== START DOWNLOAD FILES FROM ' + apiUrl + ' ===')
   await saveOne(0)
   console.log('[get-wiki-images]', '=== DOWNLOAD COMPLATE, CHECK FILES AT "' + saveDir + '" ===')
-
 })()

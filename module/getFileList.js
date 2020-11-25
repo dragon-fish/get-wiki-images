@@ -1,7 +1,6 @@
-const doAjax = require("./doAjax")
+const doAjax = require('./doAjax')
 
 module.exports = async (url, fromFile) => {
-
   console.log('[get-wiki-images]', 'Start getting file list')
   var list = []
 
@@ -26,5 +25,4 @@ module.exports = async (url, fromFile) => {
   console.log('[get-wiki-images]', 'Finished got file list, total file: ' + list.length)
 
   return list
-
 }

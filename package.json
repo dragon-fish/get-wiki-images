@@ -14,9 +14,10 @@
     "valid-url": "^1.0.9"
   },
   "scripts": {
-    "start": "node .",
-    "publish:stable": "npm publish --tag latest",
-    "prettier": "prettier --write ./index.js ./module/*.js"
+    "start": "node ./index.js",
+    "prettier": "prettier --write ./index.js ./module/*.js",
+    "publish:canary": "npm publish --tag canary",
+    "publish:stable": "npm publish --tag latest"
   },
   "bin": {
     "get-wiki-images": "./index.js"
