@@ -1,18 +1,22 @@
 {
   "name": "get-wiki-images",
   "description": "A simple script that let you quickly back up all images on the wiki via the command line",
-  "version": "1.1.2",
+  "version": "2.0.0",
   "main": "index.js",
   "author": "Dragon-Fish",
   "license": "MIT",
   "repository": "https://github.com/Dragon-Fish/get-wiki-images.git",
   "dependencies": {
-    "axios": "^0.20.0",
-    "request": "^2.88.2"
+    "axios": "^0.21.0",
+    "download": "^8.0.0",
+    "fs-extra": "^9.0.1",
+    "inquirer": "^7.3.3",
+    "valid-url": "^1.0.9"
   },
   "scripts": {
     "start": "node .",
-    "publish:stable": "npm publish --tag latest"
+    "publish:stable": "npm publish --tag latest",
+    "prettier": "prettier --write ./index.js ./module/*.js"
   },
   "bin": {
     "get-wiki-images": "./index.js"
@@ -26,5 +30,8 @@
     "mediawiki",
     "mediawiki-api",
     "cli"
-  ]
+  ],
+  "devDependencies": {
+    "prettier": "^2.2.0"
+  }
 }

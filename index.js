@@ -5,126 +5,101 @@
  * @author Dragon-Fish
  */
 
-const axios = require('axios').default
-const { saveImage } = require('./modules/saveImage')
-const { mkdirs } = require('./modules/mkdirs')
+const inquirer = require('inquirer')
+const validUrl = require('valid-url')
 const path = require('path')
+const saveFile = require('./module/saveFile')
+const fs = require('fs-extra')
+const getFileList = require('./module/getFileList')
 
-// 获取参数
-const argv = process.argv.slice(2)
+!(async () => {
+  // Cache options
+  var options = {}
 
-var wikiServer = argv[0]
-var wikiPath = argv[1] || ''
-var downContinue = argv[2] || ''
+  const ask = inquirer.createPromptModule()
 
-if (wikiPath === 'null') wikiPath = ''
-if (downContinue === 'null') downContinue = ''
+  var { apiUrl } = await ask([
+    {
+      type: 'input',
+      name: 'apiUrl',
+      message: 'Please enter the api.php URL for the wiki:',
+      default: 'https://en.mediawiki.org/w/api.php',
+      validate(answer) {
+        if (!validUrl.isUri(answer)) return false
+        if (!/api\.php$/.test(answer)) return false
+        return true
+      },
+    },
+  ])
 
-// 显示帮助信息
-if (!wikiServer || wikiServer === '-h' || wikiServer === '--help') {
-  console.log('Usage: get-wiki-images <wgServerName> [wgScriptPath]\nUpdate: yarn global add ' + require('./package.json').name)
-  return
-}
-// 版本号
-if (wikiServer === '-v' || wikiServer === '--version') {
-  console.log('get-wiki-images v' + require('./package.json').version)
-  return
-}
+  var { saveDir } = await ask([
+    {
+      type: 'input',
+      name: 'saveDir',
+      message: 'Dir to save images:',
+      default() {
+        var dir = apiUrl
+        dir = dir.replace(/^https?:\/\//i, '')
+        dir = dir.replace(/api\.php$/i, '')
+        dir = './' + dir
+        dir = path.resolve(dir)
+        return dir
+      },
+      validate(answer) {
+        if (answer === '') return false
+        return true
+      },
+    },
+  ])
 
-// 解析 server，获取可能的 protocol 设定
-var protocol = 'https'
-var protocolReg = new RegExp('^(https|http)://')
-if (protocolReg.test(wikiServer)) {
-  wikiServer = wikiServer.replace(protocolReg, (_, match) => {
-    protocol = match
-    return ''
-  })
-}
+  var { fromFile } = await ask([
+    {
+      type: 'input',
+      name: 'fromFile',
+      message: 'Download from?',
+      suffix: '(E.g. File:塞西莉亚花.png)',
+    },
+  ])
 
-// 创建 nodemw 实例
-// 创建 ajax 实例
-const AJAX = function (aifrom = '') {
-  return axios.get(protocol + '://' + wikiServer + wikiPath + '/api.php', {
-    params: {
-      format: 'json',
-      action: 'query',
-      list: 'allimages',
-      aifrom,
-      ailimit: 'max'
+  // Save options
+  options = {
+    apiUrl,
+    saveDir,
+    fromFile,
+  }
+
+  // Print options
+  // console.log('[FinalAnswers]', options)
+
+  // Mkdir
+  await fs.mkdirs(saveDir)
+
+  // Function
+  var fileList = await getFileList(apiUrl, fromFile)
+  var totalFile = fileList.length
+
+  async function saveOne(i = 0) {
+    var fileName = fileList[i]['name'],
+      fileUrl = fileList[i]['url']
+
+    // 防雷补丁
+    fileName = fileName
+      .replace(/\//g, '%2F')
+      .replace(/:/g, '%3A')
+      .replace(/\*/g, '%2A')
+      .replace(/\?/g, '%3F')
+      .replace(/"/g, '%22')
+
+    await saveFile(fileUrl, path.resolve(saveDir, fileName))
+    console.log('[get-wiki-images]', `[${((i + 1) / totalFile * 100).toFixed(2)} %] (${i + 1}/${totalFile})`, fileName)
+    i++
+    if (i < totalFile) {
+      return saveOne(i)
     }
-  })
-}
+  }
 
-// 创建存储文件夹
-const fileDir = ('./images/' + wikiServer + wikiPath + '/').replace(/\/\//g, '/')
-mkdirs(fileDir, () => { })
+  console.log('[get-wiki-images]', '=== START DOWNLOAD FILES FROM ' + apiUrl + ' ===')
+  await saveOne(0)
+  console.log('[get-wiki-images]', '=== DOWNLOAD COMPLATE, CHECK FILES AT "' + saveDir + '" ===')
 
-// 主函数
-function main(from = '', fromCount = 0) {
-
-  // 获取图片信息
-  AJAX(from).then(({ data }) => {
-
-    if (from) {
-      console.log('* DOWNLOAD FILES FROM ' + from)
-    } else {
-      console.log('=== START DOWNLOAD FILES FROM ' + wikiServer + ' ===')
-    }
-
-    if (typeof data !== 'object' || !data.query || !data.query.allimages) {
-      console.error('[ERROR] Invalid response')
-      return
-    }
-
-    // 变量
-    var { allimages } = data.query
-
-    // 缓存图片数量
-    var imgCount = allimages.length
-
-    // 单次下载任务
-    function downloadOne(index) {
-      if (index < imgCount) {
-        var img = allimages[index],
-          url = img.url,
-          fileName =
-            // 防雷补丁
-            img.name
-              .replace(/\//g, '%2F')
-              .replace(/:/g, '%3A')
-              .replace(/\*/g, '%2A')
-              .replace(/\?/g, '%3F')
-              .replace(/"/g, '%22'),
-          filePath = fileDir + fileName
-        var thisFileNo = index + fromCount + 1,
-          totalFileNo = imgCount + fromCount
-        var notSure = ''
-        if (data.continue) notSure = '?'
-        console.log(`[${(thisFileNo / totalFileNo * 100).toFixed(2)} %]`, `(${thisFileNo}/${totalFileNo}${notSure})`, fileName)
-
-        // 下载下一张图片
-        index++
-        saveImage(url, filePath, () => {
-          downloadOne(index)
-        })
-      } else {
-        // 如果还有剩余图片，则继续下载
-        if (data.continue) {
-          main(data.continue.aicontinue, fromCount + imgCount)
-        } else {
-          // 下载完毕
-          console.log('=== DOWNLOAD COMPLATE, CHECK FILES AT ' + path.resolve(fileDir) + ' ===')
-        }
-      }
-    }
-
-    // 从第一个张图片开始下载
-    downloadOne(0)
-
-  }).catch(err => {
-    console.error('[ERROR]', err)
-  })
-}
-
-// 运行
-main(downContinue)
+})()

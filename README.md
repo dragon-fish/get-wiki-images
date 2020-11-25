@@ -16,7 +16,7 @@ get-wiki-images -v
 ## Usage
 
 ```bash
-get-wiki-images <wgServerName> [wgScriptPath|null] [continue|null]
+get-wiki-images <wgServerName[wgScriptPath]> [continueFileName|null] [customDir|null]
 ```
 
 ## Examples
@@ -29,17 +29,26 @@ get-wiki-images www.wjghj.cn
 get-wiki-images http://www.shoutwiki.com
 
 # BWIKI
-get-wiki-images wiki.biligame.com /ys
+get-wiki-images wiki.biligame.com/ys
 
 # Huiji Wiki
-get-wiki-images ff14.huijiwiki.com /w
+get-wiki-images ff14.huijiwiki.com/w
 
-# Continue download from file
-get-wiki-images wiki.biligame.com /ys 塞西莉亚花.png
+# Continue download from file name
+get-wiki-images wiki.biligame.com/ys 塞西莉亚花.png
 ```
 
-## Downloaded files
+## Use custom dir
 
-Could be find at `./images/<wgServerName>/`.
+Files save at `./<wgServerName[wgScriptPath]>/` by default.
 
-e.g. You run this script at `C:\Users\YOUNAME\Documents\`. Images from `wiki.bar.com` will be save at `C:\Users\YOUNAME\Documents\images\wiki.bar.com\`
+e.g. You run this script at `/tmp`. Images from `bar.wiki.com` will be save at `/tmp/bar.wiki.com/`
+
+You can specify a custom folder:
+
+```bash
+# Save to custom dir 
+[user@your-computer /tmp]$ get-wiki-images www.wjghj.cn null ./customDir/images
+```
+
+Files will save to `/tmp/customDir/images/`
